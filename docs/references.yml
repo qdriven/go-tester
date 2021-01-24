@@ -1,6 +1,7 @@
 basic:
   - https://github.com/kjk/go-cookbook.git
-
+repos:
+  - https://github.com/hashicorp
 templates:
   - https://github.com/phcollignon/Go-Template.git
 
@@ -10,3 +11,5 @@ performance-test:
 
 blogs:
   - https://levelup.gitconnected.com/
+  - https://medium.com/scum-gazeta
+  - https://medium.com/@panjf2000
