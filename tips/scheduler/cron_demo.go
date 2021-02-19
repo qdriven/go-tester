@@ -2,7 +2,7 @@ package scheduler
 
 import (
 	"fmt"
-	"github.com/robfig/cron"
+	"github.com/robfig/cron/v3"
 	"log"
 )
 
@@ -29,10 +29,11 @@ func CronDemo() {
 	i := 0
 	c := cron.New()
 	timeSpec := "*/5 * * * * ?"
-	c.AddFunc(timeSpec, func() {
+	entryId, _ := c.AddFunc(timeSpec, func() {
 		i++
 		log.Println("this loop is ", i)
 	})
+	fmt.Println(entryId)
 	c.Start()
 	defer c.Stop()
 	select {}
@@ -40,32 +41,39 @@ func CronDemo() {
 
 type JobRunner struct {
 	DefaultSpec string
-	Funcs       []func()
+	FuncsMap    map[string][]func()
 	C           *cron.Cron
 }
 
 func NewJobRunner(spec string) *JobRunner {
+
 	runner := &JobRunner{
 		DefaultSpec: spec,
-		Funcs:       make([]func(), 0),
+		FuncsMap:    make(map[string][]func()),
 		C:           cron.New(),
 	}
 	return runner
 }
 
 func (job *JobRunner) RegisterFunc(fun func()) *JobRunner {
-	job.Funcs = append(job.Funcs, fun)
+	job.FuncsMap[job.DefaultSpec] = append(job.FuncsMap[job.DefaultSpec], fun)
 	return job
 }
 
-func (job *JobRunner) RegisterFuncWithSpec(fun func(),Spec string) *JobRunner {
-	job.Funcs = append(job.Funcs, fun)
+func (job *JobRunner) RegisterFuncWithSpec(fun func(), Spec string) *JobRunner {
+	job.FuncsMap[Spec] = append(job.FuncsMap[Spec], fun)
 	return job
 }
 
 func (job *JobRunner) Run() {
-	for _, fun := range job.Funcs {
-		_ = job.C.AddFunc(job.DefaultSpec, fun)
+	for spec, funcs := range job.FuncsMap {
+		for _, task := range funcs {
+			entryId,err := job.C.AddFunc(spec, task)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(entryId)
+		}
 	}
 	job.C.Start()
 	select {} //event case is a channel operation
@@ -79,6 +87,6 @@ func Job2() {
 	fmt.Println("this is job2")
 }
 
-func Job3(){
+func Job3() {
 	fmt.Println("this is job3 with Self Job Spec")
 }
