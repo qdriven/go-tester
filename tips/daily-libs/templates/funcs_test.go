@@ -6,6 +6,6 @@ import (
 )
 
 func TestToGetterName(t *testing.T) {
-	result :=ToGetterName("name")
+	result := ToGetterName("name")
 	fmt.Println(result)
 }
