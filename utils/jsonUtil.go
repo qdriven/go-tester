@@ -89,7 +89,7 @@ func GetString(data []byte, path ...string) (string, error) {
 /**
 JsonPath in Golang usage
 https://github.com/ohler55/ojg
- */
+*/
 func GetByPath(str string, jsonPathExp string) ([]interface{}, error) {
 
 	obj, err := oj.ParseString(str)
