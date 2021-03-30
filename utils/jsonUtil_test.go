@@ -65,7 +65,7 @@ func TestJsonGet(t *testing.T) {
 
 }
 
-func test(value interface{}) {
+func testValue(value interface{}) {
 	switch value.(type) {
 	case string:
 		// 将interface转为string字符串类型
