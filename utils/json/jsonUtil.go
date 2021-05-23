@@ -1,4 +1,4 @@
-package utils
+package json
 
 import (
 	"bytes"
@@ -60,6 +60,16 @@ func MustMarshalToString(v interface{}) string {
 // in the value pointed to by v.
 func Unmarshal(data []byte, v interface{}) error {
 	return JSON.Unmarshal(data, v)
+}
+
+func UnmarshalToMap(jsonStr string) (map[string]interface{}, error) {
+	v := make(map[string]interface{})
+	err :=UnmarshalFromString(jsonStr, &v)
+	if err!=nil{
+		return nil,err
+	}
+	return v,nil
+
 }
 
 // UnmarshalFromString unmarshal string to v.

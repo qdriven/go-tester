@@ -1,4 +1,4 @@
-package utils
+package json
 
 import (
 	"fmt"
@@ -63,6 +63,11 @@ func TestJsonGet(t *testing.T) {
 	result, _ := jsonparser.GetString(jsonData, "company", "name")
 	assert.Equal(t, result, "Acme")
 
+}
+
+func TestUnmarshalFromString(t *testing.T) {
+	result, _ := UnmarshalToMap(jsonString)
+	assert.NotEmpty(t, result["company"])
 }
 
 func testValue(value interface{}) {

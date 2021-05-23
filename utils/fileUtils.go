@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"go-tester/utils/json"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -23,7 +24,7 @@ func ReadJsonFile(filePath string) (map[string]interface{}, error) {
 		log.Fatal(err)
 		return result, err
 	}
-	err = Unmarshal(byteContents, result)
+	err = json.Unmarshal(byteContents, result)
 	return result, err
 }
 
